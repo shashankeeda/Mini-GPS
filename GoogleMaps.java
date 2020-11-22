@@ -202,12 +202,22 @@ public class GoogleMaps {
          */
         GoogleMaps map=new GoogleMaps();
         ArrayList<String> att=new ArrayList<>();
+        /*
+        IMPORTANT:
+        Attraction names must be inputted exactly as spelled in the attractions.csv file
+        with the same capital and lowercase letters as well as the spaces like shown below
+         */
         att.add("Portland City Tour");
-        att.add("National Dinosaur Monument");
+        att.add("The Field of Dreams Filming Locale");
         att.add("Hilton Head");
         map.parseFiles("roads.csv","attractions.csv");
         System.out.println("Route in order: ");
-        System.out.println(map.route("San Francisco CA","Abilene TX",att));
+        /*
+        IMPORTANT:
+        Starting and ending cities must be inputted exactly as spelled in the roads.csv file
+        with the same uppercase and lowercase letter as well as the spaces like shown below.
+         */
+        System.out.println(map.route("San Francisco CA","Daytona Beach FL",att));
         System.out.println("Miles traveled: "+map.mile);
     }
 }
