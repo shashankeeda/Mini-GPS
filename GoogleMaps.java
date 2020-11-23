@@ -54,20 +54,20 @@ public class GoogleMaps {
             String line="";
             while((line=br.readLine())!=null){
                 String[] temp=line.split(",");
-                Routes r=new Routes(temp[0],temp[1],Integer.parseInt(temp[2]),Integer.parseInt(temp[3]));
-                cityexist.put(temp[0],true);
-                cityexist.put(temp[1],true);
+                Routes r=new Routes(temp[0].toLowerCase(),temp[1].toLowerCase(),Integer.parseInt(temp[2]),Integer.parseInt(temp[3]));
+                cityexist.put(temp[0].toLowerCase(),true);
+                cityexist.put(temp[1].toLowerCase(),true);
                 routes.add(r);
             }
             br=new BufferedReader(new FileReader(fileName2));
             while((line=br.readLine())!=null){
                 String[] temp=line.split(",");
-                attraction.put(temp[0],temp[1]);
+                attraction.put(temp[0].toLowerCase(),temp[1].toLowerCase());
             }
         }
         catch (Exception e){
             System.out.println(e);
-            System.out.println("File not found, system will exit");
+            System.out.println("Error with file, system will exit");
             System.exit(1);
         }
     }
@@ -82,18 +82,23 @@ public class GoogleMaps {
         /*
         Checks for errors
          */
+        starting_city=starting_city.toLowerCase();
+        ending_city=ending_city.toLowerCase();
+        for(int i=0;i<attractions.size();i++){
+            attractions.set(i,attractions.get(i).toLowerCase());
+        }
         if(cityexist.get(starting_city)==null) {
-            System.out.println(starting_city+" is not located in the roads.csv file or is mispelled or does not have correct capitilization");
+            System.out.println(starting_city+" is not located in the roads.csv file or is misspelled");
             return cities;
         }
         if(cityexist.get(ending_city)==null) {
-            System.out.println(ending_city+" is not located in the roads.csv file or is mispelled or does not have correct capitilization");
+            System.out.println(ending_city+" is not located in the roads.csv file or is misspelled");
             return cities;
         }
         boolean truth=false;
         for(int i=0;i<attractions.size();i++){
             if(attraction.get(attractions.get(i))==null){
-                System.out.println(attractions.get(i)+" is not located in the attractions.csv file or is mispelled or does not have correct capitilization");
+                System.out.println(attractions.get(i)+" is not located in the attractions.csv file or is misspelled");
                 truth=true;
             }
         }
@@ -230,7 +235,8 @@ public class GoogleMaps {
         /*
         IMPORTANT:
         Attraction names must be inputted exactly as spelled in the attractions.csv file
-        with the same capital and lowercase letters as well as the spaces like shown below
+        with the exception of uppercase and lowercase letters, everything will be
+        converted to lowercase
          */
         att.add("Portland City Tour");
         att.add("The Field of Dreams Filming Locale");
@@ -240,7 +246,7 @@ public class GoogleMaps {
         /*
         IMPORTANT:
         Starting and ending cities must be inputted exactly as spelled in the roads.csv file
-        with the same uppercase and lowercase letter as well as the spaces like shown below.
+        with the exception of uppercase and lowercase letters, everything will be converted to lowercase.
          */
         System.out.println(map.route("San Francisco CA","Abilene TX",att));
         System.out.println("Miles traveled: "+map.mile);
