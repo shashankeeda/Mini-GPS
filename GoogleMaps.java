@@ -22,6 +22,7 @@ public class GoogleMaps {
     HashMap<String,Boolean> visited=new HashMap<String, Boolean>(522);
     HashMap<String,Integer> miles=new HashMap<String,Integer>(522);
     HashMap<String,String> travelled=new HashMap<String, String>(522);
+    HashMap<String, Boolean> cityexist=new HashMap<String, Boolean>(522);
     ArrayList<String> cities=new ArrayList<String>(1000);
     Stack<String> stack=new Stack<String>();
     int mile=0;
@@ -54,6 +55,8 @@ public class GoogleMaps {
             while((line=br.readLine())!=null){
                 String[] temp=line.split(",");
                 Routes r=new Routes(temp[0],temp[1],Integer.parseInt(temp[2]),Integer.parseInt(temp[3]));
+                cityexist.put(temp[0],true);
+                cityexist.put(temp[1],true);
                 routes.add(r);
             }
             br=new BufferedReader(new FileReader(fileName2));
@@ -64,6 +67,8 @@ public class GoogleMaps {
         }
         catch (Exception e){
             System.out.println(e);
+            System.out.println("File not found, system will exit");
+            System.exit(1);
         }
     }
     /*
@@ -74,6 +79,26 @@ public class GoogleMaps {
     to the ending_city
      */
     public List<String> route(String starting_city, String ending_city, List<String> attractions){
+        /*
+        Checks for errors
+         */
+        if(cityexist.get(starting_city)==null) {
+            System.out.println(starting_city+" is not located in the roads.csv file or is mispelled or does not have correct capitilization");
+            return cities;
+        }
+        if(cityexist.get(ending_city)==null) {
+            System.out.println(ending_city+" is not located in the roads.csv file or is mispelled or does not have correct capitilization");
+            return cities;
+        }
+        boolean truth=false;
+        for(int i=0;i<attractions.size();i++){
+            if(attraction.get(attractions.get(i))==null){
+                System.out.println(attractions.get(i)+" is not located in the attractions.csv file or is mispelled or does not have correct capitilization");
+                truth=true;
+            }
+        }
+        if(truth)
+            return cities;
         updateMaps(starting_city);
         String temp=starting_city;
         while(!(attractions.isEmpty())){
@@ -217,7 +242,7 @@ public class GoogleMaps {
         Starting and ending cities must be inputted exactly as spelled in the roads.csv file
         with the same uppercase and lowercase letter as well as the spaces like shown below.
          */
-        System.out.println(map.route("San Francisco CA","Daytona Beach FL",att));
+        System.out.println(map.route("San Francisco CA","Abilene TX",att));
         System.out.println("Miles traveled: "+map.mile);
     }
 }
