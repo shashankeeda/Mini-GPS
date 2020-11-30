@@ -104,6 +104,10 @@ public class GoogleMaps {
         }
         if(truth)
             return cities;
+        for(int i=0;i<attractions.size();i++){
+            if(attraction.get(attractions.get(i)).equals(starting_city)||attraction.get(attractions.get(i)).equals(ending_city))
+                attractions.remove(i);
+        }
         updateMaps(starting_city);
         String temp=starting_city;
         while(!(attractions.isEmpty())){
@@ -238,9 +242,9 @@ public class GoogleMaps {
         with the exception of uppercase and lowercase letters, everything will be
         converted to lowercase
          */
-        att.add("Portland City Tour");
-        att.add("The Field of Dreams Filming Locale");
+        att.add("Alcatraz");
         att.add("Hilton Head");
+        att.add("USS Midway Museum");
         map.parseFiles("roads.csv","attractions.csv");
         System.out.println("Route in order: ");
         /*
@@ -248,7 +252,7 @@ public class GoogleMaps {
         Starting and ending cities must be inputted exactly as spelled in the roads.csv file
         with the exception of uppercase and lowercase letters, everything will be converted to lowercase.
          */
-        System.out.println(map.route("San Francisco CA","Abilene TX",att));
+        System.out.println(map.route("New York NY","New York NY",att));
         System.out.println("Miles traveled: "+map.mile);
     }
 }
